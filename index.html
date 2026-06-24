@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<title>Md. Miad Ibna Noor — Graphic Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0f;--bg2:#0f0f1a;--bg3:#13131f;
+  --purple:#7c3aed;--purple-light:#a855f7;--purple-glow:#9333ea;
+  --accent:#c084fc;
+  --text:#e2e8f0;--text-muted:#94a3b8;--text-dim:#64748b;
+  --border:rgba(124,58,237,0.2);
+  --card-bg:rgba(15,15,26,0.8);
+  --glass:rgba(124,58,237,0.08);
+  --nav-h:68px;--px:5%;--radius:14px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;line-height:1.6;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;}
+
+/* NOISE */
+body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.4;}
+
+/* CURSOR */
+.cursor{
+  width:12px;height:12px;background:var(--purple-light);
+  border-radius:50%;position:fixed;top:-100px;left:-100px;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  mix-blend-mode:screen;
+  display:none;
+}
+.cursor-ring{
+  width:38px;height:38px;border:2px solid var(--accent);
+  border-radius:50%;position:fixed;top:-100px;left:-100px;
+  pointer-events:none;z-index:9998;opacity:0.7;
+  transform:translate(-50%,-50%);
+  transition:width 0.2s,height 0.2s,opacity 0.2s,border-color 0.2s;
+  display:none;
+}
+@media(pointer:fine){
+  body{cursor:none;}
+  .cursor,.cursor-ring{display:block;}
+}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9990;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.6s,visibility 0.6s;}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-logo{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,8vw,3.5rem);font-weight:800;}
+.loader-logo span{color:var(--purple-light);}
+.loader-bar{width:min(200px,60vw);height:2px;background:var(--bg3);border-radius:2px;overflow:hidden;}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));animation:lfill 1.5s ease forwards;}
+@keyframes lfill{from{width:0}to{width:100%}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:var(--nav-h);padding:0 var(--px);display:flex;align-items:center;justify-content:space-between;gap:1rem;background:rgba(10,10,15,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;white-space:nowrap;}
+.nav-logo span{color:var(--purple-light);}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{color:var(--text-muted);font-size:0.78rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;position:relative;transition:color 0.2s;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--purple-light);transition:width 0.3s;}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{padding:0.5rem 1.3rem;background:var(--purple);color:#fff;border-radius:7px;font-size:0.82rem;font-weight:600;white-space:nowrap;transition:background 0.2s,transform 0.2s,box-shadow 0.2s;}
+.nav-cta:hover{background:var(--purple-glow);transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,58,237,0.45);}
+.nav-burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:none;padding:4px;flex-shrink:0;}
+.nav-burger span{display:block;height:2px;background:var(--text);border-radius:2px;transition:transform 0.3s,opacity 0.3s;transform-origin:center;}
+.nav-burger span:nth-child(2){width:70%;margin-left:auto;}
+.nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.nav-drawer{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(10,10,15,0.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:1.5rem var(--px) 2rem;z-index:499;flex-direction:column;transform:translateY(-10px);opacity:0;transition:transform 0.3s,opacity 0.3s;}
+.nav-drawer.open{transform:translateY(0);opacity:1;}
+.nav-drawer ul{list-style:none;display:flex;flex-direction:column;margin-bottom:1.5rem;}
+.nav-drawer ul li{border-bottom:1px solid var(--border);}
+.nav-drawer ul a{display:block;padding:1rem 0;color:var(--text-muted);font-size:1rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.2s;}
+.nav-drawer ul a:hover{color:var(--purple-light);}
+.nav-drawer .nav-cta{display:block;text-align:center;padding:0.85rem;}
+
+/* HERO */
+#hero{min-height:100svh;padding:calc(var(--nav-h) + 3rem) var(--px) 4rem;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;position:relative;overflow:hidden;}
+.hero-bg-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;animation:orb 8s ease-in-out infinite alternate;}
+.orb1{width:min(500px,80vw);height:min(500px,80vw);background:rgba(124,58,237,0.18);top:-80px;right:-80px;}
+.orb2{width:min(350px,60vw);height:min(350px,60vw);background:rgba(168,85,247,0.12);bottom:0;left:-80px;animation-delay:-4s;}
+@keyframes orb{from{transform:translateY(0) scale(1)}to{transform:translateY(28px) scale(1.05)}}
+.hero-text{position:relative;z-index:1;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);padding:0.35rem 0.9rem;border-radius:20px;border:1px solid rgba(192,132,252,0.3);background:rgba(192,132,252,0.06);margin-bottom:1.25rem;animation:fadeup 0.8s 0.1s both;}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pdot 2s infinite;flex-shrink:0;}
+@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+.hero-name{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1;letter-spacing:-0.03em;margin-bottom:0.5rem;animation:fadeup 0.8s 0.2s both;}
+.hero-name .hi{background:linear-gradient(135deg,var(--purple-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-role{font-size:clamp(0.95rem,2vw,1.4rem);font-weight:300;color:var(--text-muted);margin-bottom:1.25rem;animation:fadeup 0.8s 0.3s both;}
+.hero-desc{font-size:clamp(0.85rem,1.4vw,0.97rem);color:var(--text-muted);line-height:1.75;max-width:480px;margin-bottom:2rem;animation:fadeup 0.8s 0.4s both;}
+.hero-actions{display:flex;gap:0.9rem;flex-wrap:wrap;animation:fadeup 0.8s 0.5s both;}
+.btn-primary{padding:0.8rem 1.8rem;background:linear-gradient(135deg,var(--purple),var(--purple-glow));color:#fff;border-radius:8px;font-weight:600;font-size:0.9rem;border:none;display:inline-flex;align-items:center;gap:0.5rem;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 0 28px rgba(124,58,237,0.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(124,58,237,0.5);}
+.btn-primary:active{transform:translateY(0);}
+.btn-secondary{padding:0.8rem 1.8rem;background:transparent;color:var(--text);border-radius:8px;font-weight:600;font-size:0.9rem;border:1px solid var(--border);display:inline-flex;align-items:center;gap:0.5rem;transition:border-color 0.2s,background 0.2s,transform 0.2s;}
+.btn-secondary:hover{border-color:var(--purple-light);background:var(--glass);transform:translateY(-2px);}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);animation:fadeup 0.8s 0.6s both;}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1;}
+.stat-num span{color:var(--purple-light);}
+.stat-label{font-size:0.7rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.2rem;}
+.hero-visual{position:relative;z-index:1;display:flex;justify-content:center;animation:fadeup 0.8s 0.3s both;}
+.photo-frame {
+  position: relative;
+  width: min(340px, 90%);
+  aspect-ratio: 1 / 1; /* এখানে পরিবর্তন করা হয়েছে (Square Shape) */
+}
+.photo-frame::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--purple), transparent, var(--accent));
+  z-index: -1;
+  animation: huerot 4s linear infinite;
+}
+@keyframes huerot {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* এর ফলে ছবি স্কয়ার ফ্রেমে সুন্দরভাবে ফিট হবে এবং কেটে যাবে না */
+  border-radius: 20px;
+  background: var(--bg3);
+}
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--bg3), #1a1030);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.avatar-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--glass);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+.photo-placeholder p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.badge-float {
+  position: absolute;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  animation: fbadge 3s ease-in-out infinite alternate;
+  white-space: nowrap;
+}
+@keyframes fbadge {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+.badge-float.b1 {
+  bottom: 16px;
+  left: -20px;
+}
+.badge-float.b2 {
+  top: 24px;
+  right: -20px;
+  animation-delay: -1.5s;
+}
+.bdot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+}
+.bpurple {
+  background: var(--purple-light);
+  color: #fff;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  font-size: 0.68rem;
+}
+@keyframes fadeup {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* SECTION SHARED */
+.sec-label{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--purple-light);margin-bottom:0.6rem;}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;line-height:1.1;letter-spacing:-0.02em;color:var(--text);margin-bottom:1rem;}
+.sec-desc{font-size:clamp(0.875rem,1.5vw,1rem);color:var(--text-muted);line-height:1.75;max-width:560px;}
+.sec-head{margin-bottom:3rem;}
+.sec-head.center{text-align:center;}
+.sec-head.center .sec-desc{margin:0 auto;}
+
+/* ── ABOUT ── */
+#about {
+  padding: 5.5rem var(--px);
+  background: var(--bg2);
+  position: relative;
+  overflow: hidden;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.about-img-wrap {
+  position: relative;
+}
+.about-img {
+  width: 100%;
+  border-radius: 20px;
+  object-fit: cover; /* এর ফলে ছবি চারকোনা ফ্রেমে চ্যাপ্টা না হয়ে সুন্দরভাবে ফিট হবে */
+  aspect-ratio: 1 / 1; /* এখানে পরিবর্তন করা হয়েছে (Square Shape) */
+  border: 1px solid var(--border);
+}
+.about-img-badge {
+  position: absolute;
+  bottom: -18px;
+  right: -18px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+.about-img-badge .big {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--purple-light);
+  line-height: 1;
+}
+.about-img-badge .small {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.about-objective {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  padding: 1.2rem 1.4rem;
+  border-left: 3px solid var(--purple);
+  background: var(--glass);
+  border-radius: 0 10px 10px 0;
+  margin-bottom: 1.8rem;
+  font-style: italic;
+}
+.about-contact-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.chip a {
+  color: inherit;
+}
+.chip:hover {
+  border-color: var(--purple-light);
+  color: var(--purple-light);
+}
+.chip .ci {
+  font-size: 0.85rem;
+}
+/* ── SKILLS ── */
+#skills{padding:5.5rem var(--px);background:var(--bg);}
+.skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+.skills-col h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:1.5rem;color:var(--accent);}
+.skill-item{margin-bottom:1.3rem;}
+.skill-top{display:flex;justify-content:space-between;margin-bottom:0.45rem;}
+.skill-name{font-size:0.875rem;font-weight:600;}
+.skill-pct{font-size:0.75rem;color:var(--purple-light);font-weight:700;}
+.skill-bar{height:5px;background:rgba(124,58,237,0.15);border-radius:5px;overflow:hidden;}
+.skill-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:5px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.lang-chips{display:flex;flex-wrap:wrap;gap:0.65rem;}
+.lang-chip{
+  padding:0.55rem 1.1rem;border-radius:20px;
+  border:1px solid var(--border);background:var(--card-bg);
+  font-size:0.82rem;font-weight:600;color:var(--text-muted);
+  display:flex;align-items:center;gap:0.5rem;
+}
+.lang-dot{width:8px;height:8px;border-radius:50%;background:var(--purple-light);}
+
+/* ── EXPERIENCE ── */
+#experience{padding:5.5rem var(--px);background:var(--bg2);}
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.exp-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.75rem;
+  position:relative;overflow:hidden;
+  transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;
+}
+.exp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--purple),var(--accent));}
+.exp-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(124,58,237,0.18);border-color:rgba(124,58,237,0.4);}
+.exp-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:0.3rem 0.75rem;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--purple-light);margin-bottom:1rem;}
+.exp-company{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:0.25rem;}
+.exp-role{font-size:0.85rem;color:var(--accent);font-weight:600;margin-bottom:0.9rem;}
+.exp-duties{list-style:none;display:flex;flex-direction:column;gap:0.55rem;}
+.exp-duties li{font-size:0.85rem;color:var(--text-muted);padding-left:1.1rem;position:relative;line-height:1.5;}
+.exp-duties li::before{content:'▸';position:absolute;left:0;color:var(--purple-light);font-size:0.7rem;top:0.15rem;}
+
+/* ── EDUCATION ── */
+#education{padding:5.5rem var(--px);background:var(--bg);}
+.edu-timeline{display:flex;flex-direction:column;gap:1.5rem;max-width:700px;margin:0 auto;}
+.edu-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem 1.75rem;
+  display:grid;grid-template-columns:auto 1fr;gap:1.25rem;align-items:start;
+  transition:transform 0.3s,border-color 0.3s;
+}
+.edu-card:hover{transform:translateX(6px);border-color:rgba(124,58,237,0.45);}
+.edu-year-badge{
+  background:linear-gradient(135deg,var(--purple),var(--purple-glow));
+  color:#fff;border-radius:10px;padding:0.6rem 0.85rem;
+  font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:800;
+  text-align:center;white-space:nowrap;line-height:1.2;
+}
+.edu-year-badge small{display:block;font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:500;opacity:0.8;}
+.edu-school{font-weight:700;font-size:0.95rem;margin-bottom:0.25rem;}
+.edu-degree{font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem;}
+.edu-gpa{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);border-radius:6px;padding:0.2rem 0.6rem;font-size:0.75rem;font-weight:700;color:#4ade80;}
+
+/* RECENT WORKS */
+#recent-works{padding:5rem var(--px);background:var(--bg2);}
+.recent-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem;}
+.view-all{color:var(--purple-light);font-size:0.875rem;font-weight:600;display:inline-flex;align-items:center;gap:0.4rem;white-space:nowrap;transition:gap 0.2s;}
+.view-all:hover{gap:0.8rem;}
+.recent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.recent-card{position:relative;overflow:hidden;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg3);transition:transform 0.3s,box-shadow 0.3s;aspect-ratio:4/3;}
+.recent-card:first-child{grid-column:span 2;aspect-ratio:unset;min-height:260px;}
+.recent-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(124,58,237,0.2);}
+.recent-card img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
+.recent-card:hover img{transform:scale(1.04);}
+.card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,15,0.95) 0%,rgba(10,10,15,0.15) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:1.2rem;opacity:0;transition:opacity 0.3s;}
+.recent-card:hover .card-overlay{opacity:1;}
+@media(hover:none){.card-overlay{opacity:1;background:linear-gradient(to top,rgba(10,10,15,0.9) 0%,transparent 70%);}}
+.card-overlay h3{font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;line-height:1.3;}
+.card-overlay a{color:var(--accent);font-size:0.78rem;font-weight:600;display:inline-flex;align-items:center;gap:0.3rem;}
+
+/* PROJECTS */
+#projects{padding:5rem var(--px);background:var(--bg);}
+.projects-filter{display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:2.5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:0.25rem;scrollbar-width:none;}
+.projects-filter::-webkit-scrollbar{display:none;}
+.filter-btn{padding:0.45rem 1.1rem;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-family:inherit;font-size:0.78rem;font-weight:600;white-space:nowrap;transition:all 0.2s;flex-shrink:0;}
+.filter-btn.active,.filter-btn:hover{background:var(--purple);border-color:var(--purple);color:#fff;}
+.filter-btn:active{transform:scale(0.96);}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:1.25rem;margin-bottom:2.5rem;}
+.project-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;}
+.project-card:hover{transform:translateY(-5px);box-shadow:0 16px 44px rgba(124,58,237,0.2);border-color:rgba(124,58,237,0.45);}
+.project-thumb{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--bg3);transition:transform 0.4s;}
+.project-card:hover .project-thumb{transform:scale(1.03);}
+.project-info{padding:1rem 1.1rem 1.2rem;}
+.project-title{font-weight:700;font-size:0.9rem;margin-bottom:0.7rem;line-height:1.4;}
+.project-cta{display:inline-flex;align-items:center;gap:0.4rem;color:var(--purple-light);font-size:0.78rem;font-weight:600;padding:0.4rem 0.85rem;border:1px solid rgba(124,58,237,0.3);border-radius:6px;transition:all 0.2s;}
+.project-cta:hover,.project-cta:active{background:var(--purple);border-color:var(--purple);color:#fff;}
+.load-more-wrap{text-align:center;}
+.load-more-btn{padding:0.8rem 2.2rem;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;font-family:inherit;font-size:0.88rem;font-weight:600;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.25s;}
+.load-more-btn:hover{border-color:var(--purple-light);color:var(--purple-light);background:var(--glass);}
+.load-more-btn.loading::after{content:'';width:14px;height:14px;border-radius:50%;border:2px solid var(--purple-light);border-top-color:transparent;animation:spin 0.7s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SOCIAL */
+#social{padding:5rem var(--px);background:var(--bg2);text-align:center;}
+.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(155px,45%),1fr));gap:0.9rem;margin-top:2.5rem;}
+.social-card{display:flex;align-items:center;gap:0.75rem;padding:0.85rem 1rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-weight:600;font-size:0.85rem;transition:all 0.25s;}
+.social-card:hover,.social-card:active{border-color:var(--purple-light);background:var(--glass);transform:translateY(-3px);box-shadow:0 8px 26px rgba(124,58,237,0.15);color:var(--purple-light);}
+.s-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+
+/* FOOTER */
+footer{padding:4rem var(--px) 2rem;background:var(--bg);border-top:1px solid var(--border);position:relative;overflow:hidden;}
+.footer-ticker{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:0.75rem 0;margin:0 0 2.5rem;}
+.ticker-track{display:flex;gap:2.5rem;animation:ticker 22s linear infinite;white-space:nowrap;}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0;}
+.ticker-item span{color:var(--purple-light);margin-right:2.5rem;}
+.footer-inner{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:2rem;margin-bottom:2.5rem;}
+.footer-logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;}
+.footer-logo span{color:var(--purple-light);}
+.footer-tagline{color:var(--text-muted);font-size:0.85rem;margin-top:0.35rem;}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;list-style:none;}
+.footer-links a{color:var(--text-muted);font-size:0.85rem;transition:color 0.2s;}
+.footer-links a:hover{color:var(--purple-light);}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;}
+.footer-copy{font-size:0.78rem;color:var(--text-dim);}
+.footer-bh{display:inline-flex;align-items:center;gap:0.35rem;color:var(--purple-light);font-size:0.78rem;font-weight:600;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-left.visible{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal-right.visible{opacity:1;transform:translateX(0);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .about-grid{gap:2.5rem;}
+  .exp-grid{grid-template-columns:1fr;}
+  .skills-layout{gap:2rem;}
+}
+@media(max-width:900px){
+  .recent-grid{grid-template-columns:1fr 1fr;}
+  .recent-card:first-child{grid-column:span 2;min-height:220px;}
+}
+@media(max-width:767px){
+  :root{--nav-h:60px;}
+  .nav-links,.nav-cta{display:none;}
+  .nav-burger{display:flex;}
+  .nav-drawer{display:flex;}
+  #hero{grid-template-columns:1fr;text-align:center;padding-top:calc(var(--nav-h) + 2rem);padding-bottom:3rem;min-height:auto;gap:2rem;}
+  .hero-eyebrow{margin:0 auto 1.25rem;}
+  .hero-desc{margin-left:auto;margin-right:auto;}
+  .hero-actions{justify-content:center;}
+  .hero-stats{justify-content:center;}
+  .hero-visual{order:-1;}
+  .photo-frame{width:min(240px,72vw);}
+  .badge-float.b1{bottom:10px;left:0;}
+  .badge-float.b2{top:14px;right:0;}
+  .about-grid{grid-template-columns:1fr;}
+  .about-img-wrap{max-width:320px;margin:0 auto;}
+  .about-img-badge{right:0;bottom:-14px;}
+  .skills-layout{grid-template-columns:1fr;}
+  .exp-grid{grid-template-columns:1fr;}
+  .recent-grid{grid-template-columns:1fr;}
+  .recent-card:first-child{grid-column:span 1;min-height:200px;}
+  .social-grid{grid-template-columns:1fr 1fr;}
+  .footer-inner{flex-direction:column;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:500px){
+  :root{--px:4%;}
+  .hero-actions{flex-direction:column;align-items:center;}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center;}
+  .photo-frame{width:min(210px,80vw);}
+  .badge-float{font-size:0.68rem;padding:0.45rem 0.7rem;}
+  .hero-stats{gap:1.5rem;}
+  .social-grid{grid-template-columns:1fr;}
+  .edu-card{grid-template-columns:1fr;gap:0.75rem;}
+  .about-contact-chips{gap:0.5rem;}
+}
+@media(min-width:1400px){:root{--px:8%;}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">MK<span>.</span></div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">MK<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#social">Connect</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Contact Now →</a>
+  <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-drawer" id="drawer">
+  <ul>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#social">Connect</a></li>
+  </ul>
+  <a href="contact.html" class="nav-cta">Contact Now →</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-bg-orb orb1"></div>
+  <div class="hero-bg-orb orb2"></div>
+  <div class="hero-text">
+    <h1 class="hero-name">MD. MIAD<br><span class="hi">IBNA NOOR</span></h1>
+    <p class="hero-role">Senior Graphic Designer</p>
+    <div class="hero-actions">
+      <a href="contact.html" class="btn-primary">Contact Now ✦</a>
+      <a href="https://www.behance.net/miadkhan" target="_blank" rel="noopener" class="btn-secondary">Behance ↗</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">3<span>+</span></div><div class="stat-label">Years Exp</div></div>
+      <div class="stat-item"><div class="stat-num">59<span>+</span></div><div class="stat-label">Followers</div></div>
+      <div class="stat-item"><div class="stat-num">152<span>+</span></div><div class="stat-label">Appreciations</div></div>
+    </div>
+  </div>
+
+
+  
+  <div class="hero-visual">
+    <div class="photo-frame">
+      <img src="https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/379965870_619865426984125_6884993253154556118_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeE-u836x9xntc4L9D7Kw2by0oajEwG5EgHShqMTAbkSAZjTgvj-uet0bd9jeM5Pc-xCx8sw0u4BrK-_TqHeuawG&_nc_ohc=17hWypkpxTAQ7kNvwGLFJdr&_nc_oc=Adpk_O_J2EsJgqibgYoYPZZ_blRVqLf5WGj60aAJEnD_2kp2Zx3QaNwg3-nremo26x8&_nc_zt=23&_nc_ht=scontent.fdac99-1.fna&_nc_gid=8mrv0CNTCggreL-8cK7vzg&_nc_ss=7b2a8&oh=00_Af-x-fjwSWTU6sv2eOS3TzxygjUVzGTq7J_4d-T5LPxRsg&oe=6A41A5C8" alt="Md. Miad Ibna Noor"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="photo-placeholder" style="display:none">
+        <div class="avatar-icon">👨‍🎨</div>
+        <p>Md. Miad Ibna Noor<br>Graphic Designer</p>
+      </div>
+    </div>
+    <div class="badge-float b1"><span class="bdot"></span>Available for hire</div>
+    <div class="badge-float b2"><span class="bpurple">MK DESIGNING</span></div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-img-wrap reveal-left">
+      <img class="about-img"
+        src="https://scontent.fdac99-1.fna.fbcdn.net/v/t39.30808-6/495361399_2117783558687474_1593375177468375452_n.jpg?stp=dst-jpg_tt6&cstp=mx1366x2048&ctp=s1366x2048&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE0RJkMtEsrfdJFv4Q3GDYD7hMFeZs-XxzuEwV5mz5fHO_Bde0JGPbkojk-0ShoM7z_JT3HuVWCnPyPnniLQTwm&_nc_ohc=TwE4CB94DKsQ7kNvwGhz9eZ&_nc_oc=AdodYgmvZLEzk7agxE-dYU8nAScyrhkJx407tYPM_WppqJPp79mVdLSvtftdQcvnhaA&_nc_zt=23&_nc_ht=scontent.fdac99-1.fna&_nc_gid=Vw2Dd6IZXdmhPGmpVHXLOg&_nc_ss=7b2a8&oh=00_Af-O4wqTVVD7dW2VwbbFGV5JjwQR0V9IoIlT0vOTVypq1A&oe=6A41B259"
+        alt="Miad Khan"
+        onerror="this.src='https://pps.services.adobe.com/api/profile/678414FF58FAB7E40A495EDB@AdobeID/image/ebff33c9-3189-4148-a61d-3e95c845d7c5/276'">
+      <div class="about-img-badge">
+        <div class="big">3+</div>
+        <div class="small">Years of<br>Experience</div>
+      </div>
+    </div>
+    <div class="about-content reveal-right">
+      <span class="sec-label">Who I Am</span>
+      <h2 class="sec-title">About Me</h2>
+      <div class="about-objective">
+"Hi, I'm Md. Miad Ibna Noor, a passionate Graphic Designer and Content Creator based in Dhaka. With hands-on experience in crafting logos, banners, and social media posts for various brands, I blend strategy with creativity to deliver visually compelling designs. Beyond graphics, I also specialize in video editing and love bringing innovative visual stories to life."      </div>
+      <div class="about-contact-chips">
+        <div class="chip"><span class="ci">📍</span> Kalabagan, Dhanmondi 32, Dhaka</div>
+        <a href="mailto:miadkhan.official1@gmail.com" class="chip"><span class="ci">✉</span> miadkhan.official1@gmail.com</a>
+        <a href="https://wa.me/8801972428482" target="_blank" rel="noopener" class="chip"><span class="ci"></span> +880 1972 428482</a>
+        <a href="https://www.behance.net/miadkhan" target="_blank" rel="noopener" class="chip"><span class="ci">🎨</span> behance.net/miadkhan</a>
+        <a href="https://www.linkedin.com/in/miadkhan/" target="_blank" rel="noopener" class="chip"><span class="ci">💼</span> MIAD KHAN OFFICIAL</a>
+      </div>
+      <a href="contact.html" class="btn-primary" style="display:inline-flex">Let's Work Together ✦</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section id="skills">
+  <div class="sec-head center reveal">
+    <span class="sec-label">What I Do</span>
+    <h2 class="sec-title">Skills & Expertise</h2>
+    <p class="sec-desc">Combining creativity with technical precision to deliver outstanding visual solutions.</p>
+  </div>
+  <div class="skills-layout">
+    <div class="skills-col reveal">
+      <h3>✦ Expertise Skills</h3>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Logo Design</span><span class="skill-pct">95%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="95"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Creativity</span><span class="skill-pct">92%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="92"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Banner Design</span><span class="skill-pct">90%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="90"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Photo Editing</span><span class="skill-pct">88%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="88"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Video Editing</span><span class="skill-pct">75%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="75"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Content Creator</span><span class="skill-pct">80%</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="80"></div></div>
+      </div>
+    </div>
+    <div class="skills-col reveal">
+      <h3>✦ Language Skills</h3>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Bangla</span><span class="skill-pct">Native</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="100"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">English</span><span class="skill-pct">Good</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="70"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Hindi</span><span class="skill-pct">Conversational</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="40"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-top"><span class="skill-name">Japanese</span><span class="skill-pct">Basic</span></div>
+        <div class="skill-bar"><div class="skill-fill" data-w="20"></div></div>
+      </div>
+      <div style="margin-top:2.5rem;">
+        <h3 style="margin-bottom:1rem;">✦ Tools I Use</h3>
+        <div class="lang-chips">
+
+          <div class="lang-chip"><span class="lang-dot"></span>Adobe Photoshop</div>
+          <div class="lang-chip"><span class="lang-dot"></span>Adobe Illustrator</div>
+          <div class="lang-chip"><span class="lang-dot"></span>Adobe Premiere</div>
+          <div class="lang-chip"><span class="lang-dot"></span>Adobe XD</div>
+          <div class="lang-chip"><span class="lang-dot"></span>Canva</div>
+          <div class="lang-chip"><span class="lang-dot"></span>Figma</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="experience">
+  <div class="sec-head center reveal">
+    <span class="sec-label">My Journey</span>
+    <h2 class="sec-title">Work Experience</h2>
+    <p class="sec-desc">Professional experience working with real companies delivering high-quality design work.</p>
+  </div>
+  <div class="exp-grid">
+
+    <div class="exp-card reveal">
+      <div class="exp-badge">📅 April 2019 </div>
+      <div class="exp-company">BRAC School</div>
+      <div class="exp-role">Basic Computer Trainer</div>
+      <ul class="exp-duties">
+        <li>Conducted basic computer training sessions and workshops for students.</li>
+        <li>Taught essential software skills, computer operating systems, and digital literacy.</li>
+        <li>Guided young learners to effectively use technology for education and creative tasks.</li>
+      </ul>
+    </div>
+
+
+
+    <div class="exp-card reveal">
+      <div class="exp-badge">📅 2023</div>
+      <div class="exp-company">Pixemo Lab</div>
+      <div class="exp-role">SeniorGraphic Designer</div>
+      <ul class="exp-duties">
+        <li>Created social media posts and logo designs for major companies</li>
+        <li>Completed complex and challenging design projects with tight deadlines</li>
+        <li>Developed visual brand identities for diverse client portfolios</li>
+      </ul>
+    </div>
+
+
+    <div class="exp-card reveal">
+      <div class="exp-badge">📅 July 2024 – Oct 2024</div>
+      <div class="exp-company">ADJuvantBD</div>
+      <div class="exp-role">Senior Graphic Designer</div>
+      <ul class="exp-duties">
+        <li>Designed a large volume of social media posts over 4 months</li>
+        <li>Created visual content for a YouTube channel</li>
+        <li>Delivered consistent brand visuals across multiple platforms</li>
+      </ul>
+    </div>
+
+
+
+<div class="exp-card reveal">
+      <div class="exp-badge">📅 January 2020 - Now </div>
+      <div class="exp-company">Freelancer</div>
+      <div class="exp-role">Content & Brand Designer</div>
+      <ul class="exp-duties">
+        <li>Designed logos, banners, and high-converting social media visuals for diverse clients.</li>
+        <li>Edited video content and managed visual assets for engaging YouTube channels.</li>
+        <li>Created consistent and impactful brand identity solutions as an independent freelancer.</li>
+      </ul>
+    </div>
+
+
+
+
+
+  </div>
+</section>
+
+<!-- ═══ EDUCATION ═══ -->
+<section id="education">
+  <div class="sec-head center reveal">
+    <span class="sec-label">Academic Background</span>
+    <h2 class="sec-title">Education</h2>
+  </div>
+
+
+
+  <div class="edu-timeline">
+    <div class="edu-card reveal">
+      <div class="edu-year-badge">SSC<small>2017</small></div>
+      <div class="edu-info">
+        <div class="edu-school">Harihar Para High School</div>
+        <div class="edu-degree">Secondary School Certificate (SSC)</div>
+        <span class="edu-gpa">⭐ GPA: 4.18</span>
+      </div>
+    </div>
+
+
+
+    <div class="edu-card reveal">
+      <div class="edu-year-badge">HSC<small>2020</small></div>
+      <div class="edu-info">
+        <div class="edu-school">Kamar Ali High School & College</div>
+        <div class="edu-degree">Higher Secondary Certificate (HSC)</div>
+        <span class="edu-gpa">⭐ GPA: 2.67</span>
+      </div>
+    </div>
+
+
+    <div class="edu-card reveal">
+      <div class="edu-year-badge">BSc<small>Batch<br> 2020-21 </small></div>
+      <div class="edu-info">
+        <div class="edu-school">Daffodil Institute of Information Technology (DIIT)</div>
+        <div class="edu-degree">Bachelor of Science in Computer Science & Engineering (BSc in CSE)</div>
+        <span class="edu-gpa">⏳ Status: Ongoing</span>
+      </div>
+    </div>
+
+
+
+  </div>
+</section>
+
+<!-- ═══ RECENT WORKS ═══ -->
+<section id="recent-works">
+  <div class="recent-header reveal">
+    <div>
+      <span class="sec-label">Featured Work</span>
+      <h2 class="sec-title" style="margin-bottom:0">Recent Projects</h2>
+    </div>
+    <a href="https://www.behance.net/miadkhan" target="_blank" rel="noopener" class="view-all">View all on Behance →</a>
+  </div>
+  <div class="recent-grid" id="recentGrid"></div>
+</section>
+
+<!-- ═══ ALL PROJECTS ═══ -->
+<section id="projects">
+  <div class="sec-head reveal">
+    <span class="sec-label">Portfolio</span>
+    <h2 class="sec-title">All Projects</h2>
+    <p class="sec-desc">Explore the full collection — brand identities, social campaigns, packaging & more.</p>
+  </div>
+  <div class="projects-filter reveal" id="filterBar">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="logo">Logo Design</button>
+    <button class="filter-btn" data-filter="social">Social Media</button>
+    <button class="filter-btn" data-filter="brand">Branding</button>
+    <button class="filter-btn" data-filter="banner">Banner</button>
+  </div>
+  <div class="projects-grid" id="projectsGrid"></div>
+  <div class="load-more-wrap" id="loadMoreWrap">
+    <button class="load-more-btn" id="loadMoreBtn">Load More Projects ↓</button>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL ═══ -->
+<section id="social">
+  <div class="sec-head center reveal">
+    <span class="sec-label">Let's Connect</span>
+    <h2 class="sec-title">Find Me Online</h2>
+    <p class="sec-desc">Follow my work across platforms and let's build something amazing together.</p>
+  </div>
+  <div class="social-grid reveal">
+    <a href="https://www.behance.net/miadkhan" target="_blank" rel="noopener" class="social-card">
+      <div class="s-icon" style="background:rgba(10,100,255,0.15)">🎨</div><span>Behance</span>
+    </a>
+    <a href="https://www.facebook.com/MiadKhan.Official90" target="_blank" rel="noopener" class="social-card">
+      <div class="s-icon" style="background:rgba(24,119,242,0.15)">f</div><span>Facebook</span>
+    </a>
+    <a href="https://www.instagram.com/miadkhan_official" target="_blank" rel="noopener" class="social-card">
+      <div class="s-icon" style="background:rgba(225,48,108,0.15)">📸</div><span>Instagram</span>
+    </a>
+    <a href="https://www.linkedin.com/in/miadkhan/" target="_blank" rel="noopener" class="social-card">
+      <div class="s-icon" style="background:rgba(0,119,181,0.15)">in</div><span>LinkedIn</span>
+    </a>
+    <a href="https://dribbble.com/miadkhan" target="_blank" rel="noopener" class="social-card">
+      <div class="s-icon" style="background:rgba(234,76,137,0.15)">🏀</div><span>Dribbble</span>
+    </a>
+
+
+  </div>
+  <div style="text-align:center;margin-top:2.5rem;">
+    <a href="contact.html" class="btn-primary" style="display:inline-flex">Start a Project ✦</a>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+
+
+  <div class="footer-ticker"><div class="ticker-track" id="ticker"></div></div>
+  <div class="footer-inner">
+
+
+    <div>
+      <a href="#" class="footer-logo">MK<span>.</span></a>
+      <p class="footer-tagline">Md. Miad Ibna Noor · Graphic Designer · Dhaka, Bangladesh</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="https://www.behance.net/miadkhan" target="_blank">Behance ↗</a></li>
+    </ul>
+  </div>
+
+
+<div class="footer-bottom" style="text-align: center; width: 100%;">
+    <p class="footer-copy">All rights reserved by MD. MIAD IBNA NOOR © 2026</p>
+  </div>
+</footer>
+
+
+
+<script>
+/* DATA */
+const allProjects=[
+  {id:1,title:"Cars Social Media Ads Design",img:"https://mir-s3-cdn-cf.behance.net/projects/404/61e53b249872159.Y3JvcCwxMzkyLDEwODksMyww.jpg",url:"https://www.behance.net/gallery/249872159/Cars-Social-Media-Ads-Design",tags:["social","brand"]},
+  {id:2,title:"ASIAN IMPORTS | Automotive Social Media Designs",img:"https://mir-s3-cdn-cf.behance.net/projects/404/da81f9249849835.Y3JvcCwxNDAwLDEwOTUsMCwxODAx.jpg",url:"https://www.behance.net/gallery/249849835/ASIAN-IMPORTS-Automotive-Social-Media-Designs",tags:["social","brand"]},
+  {id:3,title:"AANQA Clothing Brand Design",img:"https://mir-s3-cdn-cf.behance.net/projects/404/66847a236745999.Y3JvcCwxMzI0LDEwMzYsMzksMA.jpg",url:"https://www.behance.net/gallery/236745999/AANQA-clothing-brand-design",tags:["brand","logo"]},
+  {id:4,title:"Perfume Fb Cover Photo | Fraglet",img:"https://mir-s3-cdn-cf.behance.net/projects/404/c54a45247783309.Y3JvcCwzNDA5LDI2NjcsMTY5Niww.jpg",url:"https://www.behance.net/gallery/247783309/Perfume-Fb-cover-photo-Fraglet",tags:["social","banner"]},
+  {id:5,title:"BRAND KOREA BANGLADESH | Skin Care Box Design",img:"https://mir-s3-cdn-cf.behance.net/projects/404/f5777f242916935.Y3JvcCw3MjIsNTY1LDM0MSwzNzI.jpg",url:"https://www.behance.net/gallery/242916935/BRAND-KOREA-BANGLADESH-Skin-care-parchel-box-design",tags:["brand","logo"]},
+  {id:6,title:"SKIN PLUS | Skin Care Box Design",img:"https://mir-s3-cdn-cf.behance.net/projects/404/c488e0242918097.Y3JvcCw2MTMsNDc5LDM4NSw0NDE.jpg",url:"https://www.behance.net/gallery/242918097/SKIN-PLUS-Skin-care-parchel-box-design",tags:["brand"]},
+  {id:7,title:"Honey Logo Design",img:"https://mir-s3-cdn-cf.behance.net/projects/404/be0401127489489.Y3JvcCwxMDIyLDgwMCwyNDAsMA.jpg",url:"https://www.behance.net/gallery/127489489/Honey-logo-design",tags:["logo"]},
+  {id:8,title:"STYLOR: A T-Shirt Brand",img:"https://mir-s3-cdn-cf.behance.net/projects/404/bf3ef5202091431.Y3JvcCwxNDAwLDEwOTUsMCwzNTM.jpg",url:"https://www.behance.net/gallery/202091431/STYLOR-A-T-SHIRT-BRAND",tags:["brand","logo"]},
+  {id:9,title:"FABHON CLOTHING | T-Shirt Brand Logo",img:"https://mir-s3-cdn-cf.behance.net/projects/404/77d1e9231966907.Y3JvcCwxNDAwLDEwOTUsMCwzNTM.jpg",url:"https://www.behance.net/gallery/231966907/FABHON-CLOTHING-T-Shirt-Brand-Logo-Design",tags:["logo","brand"]},
+  {id:10,title:"B Letter Logo Design (Bass)",img:"https://mir-s3-cdn-cf.behance.net/projects/404/787d72106726109.Y3JvcCwxMzgyLDEwODEsMjcsMA.jpg",url:"https://www.behance.net/gallery/106726109/B-letter-logo-design-(Bass)",tags:["logo"]},
+  {id:11,title:"IT CLUB Logo Design DIIT",img:"https://mir-s3-cdn-cf.behance.net/projects/404/198602155768773.Y3JvcCwxMTUwLDkwMCwxMjUsMA.jpg",url:"https://www.behance.net/gallery/155768773/IT-CLUB-logo-deisgn-DIIT",tags:["logo","brand"]},
+  {id:12,title:"TW Combined Letter Mark Logo",img:"https://mir-s3-cdn-cf.behance.net/projects/404/c06c1d108390905.Y3JvcCw4MDgsNjMyLDAsMA.png",url:"https://www.behance.net/gallery/108390905/TW-combined-letter-mark-logo-design",tags:["logo"]},
+];
+
+/* RECENT */
+function buildRecent(){
+  const g=document.getElementById('recentGrid');
+  allProjects.slice(0,4).forEach(p=>{
+    const d=document.createElement('div');d.className='recent-card reveal';
+    d.innerHTML=`<img src="${p.img}" alt="${p.title}" loading="lazy"><div class="card-overlay"><h3>${p.title}</h3><a href="${p.url}" target="_blank" rel="noopener">View on Behance ↗</a></div>`;
+    g.appendChild(d);
+  });
+}
+
+/* PROJECTS */
+let visCount=6,activeFilter='all';
+const getFiltered=()=>activeFilter==='all'?allProjects:allProjects.filter(p=>p.tags.includes(activeFilter));
+function buildProjects(){
+  const g=document.getElementById('projectsGrid');g.innerHTML='';
+  getFiltered().slice(0,visCount).forEach(p=>{
+    const d=document.createElement('div');d.className='project-card reveal';
+    d.innerHTML=`<img class="project-thumb" src="${p.img}" alt="${p.title}" loading="lazy"><div class="project-info"><div class="project-title">${p.title}</div><a href="${p.url}" target="_blank" rel="noopener" class="project-cta">View Project ↗</a></div>`;
+    g.appendChild(d);
+  });
+  document.getElementById('loadMoreWrap').style.display=visCount>=getFiltered().length?'none':'block';
+  setTimeout(()=>g.querySelectorAll('.project-card').forEach(c=>c.classList.add('visible')),40);
+}
+document.getElementById('filterBar').addEventListener('click',e=>{
+  if(!e.target.classList.contains('filter-btn'))return;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');activeFilter=e.target.dataset.filter;visCount=6;buildProjects();
+});
+document.getElementById('loadMoreBtn').addEventListener('click',function(){
+  this.classList.add('loading');
+  setTimeout(()=>{visCount+=6;buildProjects();this.classList.remove('loading');},700);
+});
+
+/* TICKER */
+function buildTicker(){
+  const words=["THINK","CRETIVE","AND","DO","SIMPLY"];
+  const t=document.getElementById('ticker');
+  const items=[...words,...words].map(w=>`<span class="ticker-item"><span>✦</span>${w}</span>`).join('');
+  t.innerHTML=items+items;
+}
+
+/* BURGER */
+const burger=document.getElementById('burger'),drawer=document.getElementById('drawer');
+burger.addEventListener('click',()=>{
+  const open=burger.classList.toggle('open');
+  drawer.classList.toggle('open');burger.setAttribute('aria-expanded',open);
+  document.body.style.overflow=open?'hidden':'';
+});
+drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  burger.classList.remove('open');drawer.classList.remove('open');
+  burger.setAttribute('aria-expanded','false');document.body.style.overflow='';
+}));
+
+/* CURSOR */
+if(window.matchMedia('(pointer:fine)').matches){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=window.innerWidth/2,my=window.innerHeight/2,rx=mx,ry=my;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cur.style.left=mx+'px';cur.style.top=my+'px';
+  });
+  (function anim(){
+    rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
+    requestAnimationFrame(anim);
+  })();
+  document.addEventListener('mouseleave',()=>{cur.style.opacity='0';ring.style.opacity='0';});
+  document.addEventListener('mouseenter',()=>{cur.style.opacity='1';ring.style.opacity='0.7';});
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.opacity='1';ring.style.borderColor='var(--purple-light)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='38px';ring.style.height='38px';ring.style.opacity='0.7';ring.style.borderColor='var(--accent)';});
+  });
+}
+
+/* REVEAL + SKILL BARS */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      e.target.querySelectorAll&&e.target.querySelectorAll('.skill-fill').forEach(f=>{f.style.width=f.dataset.w+'%';});
+    }
+  });
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+
+/* Also trigger skill bars when skills section becomes visible */
+const skillsSection=document.getElementById('skills');
+const skillObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting)document.querySelectorAll('.skill-fill').forEach(f=>{f.style.width=f.dataset.w+'%';});
+  });
+},{threshold:0.2});
+
+function observeAll(){
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>revObs.observe(el));
+  if(skillsSection)skillObs.observe(skillsSection);
+}
+
+/* LOADER */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('hidden');
+    buildRecent();buildProjects();buildTicker();
+    setTimeout(observeAll,100);
+  },1500);
+});
+</script>
+</body>
+</html>
